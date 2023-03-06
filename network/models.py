@@ -14,8 +14,12 @@ class Post(models.Model):
 
 class Profile(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)
-    profilePic=models.CharField(max_length=250, null=True, blank=True)
-    introduction=models.CharField(max_length=400)
+    username=models.CharField(max_length=80)
+    profilePic=models.CharField(max_length=250, null=True, blank=True, default="https://th.bing.com/th/id/OIP.ybB2a0HimX1I-ybBY4pOPwHaHa?pid=ImgDet&rs=1")
+    introduction=models.CharField(max_length=400, default="")
+
+    def __str__(self):
+        return self.username
 
 class Follows(models.Model):
     follower=models.CharField(max_length=80)

@@ -1,0 +1,24 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <main id="profileMainContainer">
+        <section id="introHeader">
+        {% for data in profile %}
+            <img id="profilePicture" src="{{ data.profilePic }}" alt="Profile picture">
+            <div id="profileInfo">
+                <p><b>{{ data.user }}</b></p>
+                <p><i>{{ data.introduction }}</i></p>
+            </div>
+        </section>
+        <section class="readChirpsContainer">
+            {% for chirp in chirps reversed %}
+                <div class="bg-gray-100 m-2 border px-5 py-2">
+                    <p class="font-medium py-1"><img class="chirpProfilePicture" src="{{ data.profilePic }}" alt="Profile picture"> &nbsp; {{ chirp.user }}</p>
+                    <li class="list-none text-base mb-2">{{ chirp.chirp }}</li>
+                    <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}<span style="float: right">{{ chirp.likes }} likes</span></p>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        </section>
+    </main>
+{% endblock %}

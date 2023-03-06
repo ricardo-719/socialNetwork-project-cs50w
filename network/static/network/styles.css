@@ -27,6 +27,36 @@ html {
     background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
-#readChirpsContainer {
+.readChirpsContainer {
     min-width: 32rem;
+}
+
+#profileMainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#introHeader {
+    display: flex;
+    align-self: flex-start;
+    margin-left: 10%;
+}
+
+#profilePicture {
+ border-radius: 50%;
+ max-width: 15rem;
+ margin: 5% 2%;
+}
+
+.chirpProfilePicture {
+    display: inline-block;
+    border-radius: 50%;
+    max-width: 2.2rem;
+}
+
+#profileInfo {
+    font-size: 1.2rem;
+    margin-top: 5%;
 }

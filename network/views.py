@@ -26,6 +26,7 @@ class PostForm(ModelForm):
 def index(request):
     form = PostForm(request.POST)
     chirps = Post.objects.all()
+    profile = Profile.objects.all()
     if request.method == "POST":
         if request.user.is_authenticated:
             if form.is_valid():
@@ -38,7 +39,8 @@ def index(request):
     else:
         return render(request, "network/index.html", {
             "form": PostForm(),
-            "chirps": chirps
+            "chirps": chirps,
+            "profile": profile
         })
 
 
@@ -89,6 +91,23 @@ def register(request):
                 "message": "Username already taken."
             })
         login(request, user)
+        # Generate profile for new user
+        f = Profile(user=request.user, username=request.user)
+        f.save()
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def profile_view(request, name):
+    userProfile = Profile.objects.filter(username=name)
+    userProfileId = 0
+    for data in userProfile:
+        userProfileId = data.id
+    chirps = Post.objects.filter(user=userProfileId)
+    if userProfile:
+        return render(request, "network/profilePage.html", {
+            "profile": userProfile,
+            "chirps": chirps        
+            })
+    return render(request, "network/login.html")
