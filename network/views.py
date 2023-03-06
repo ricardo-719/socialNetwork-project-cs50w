@@ -15,10 +15,10 @@ class PostForm(ModelForm):
         fields = ['chirp']
         """ exclude = ['user', 'likes', 'date'] """
         widgets = {'chirp': Textarea(attrs={
-            'class': "form-control px-2 py-1.5 text-gray-700 border border-solid border-gray-300 rounded transition ease-in-out m-1 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none",
-            'cols': 16,
-            'rows': 8,
-            'style': 'width: 35%',
+            'class': "form-control px-2 py-1.5 text-gray-700 rounded transition ease-in-out m-1",
+            'id': "chirperForm",
+            'cols': "60",
+            'rows': "5",
             'autocomplete': "off",
             'placeholder': 'What\'s Happening?', 
             })}
