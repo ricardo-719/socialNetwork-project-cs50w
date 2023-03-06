@@ -10,6 +10,7 @@ class Post(models.Model):
     chirp = models.CharField(max_length=280)
     likes = models.IntegerField()
     date = models.DateField()
+    time = models.TimeField()
 
 class Profile(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)

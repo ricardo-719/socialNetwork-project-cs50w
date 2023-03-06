@@ -1,15 +1,28 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    <section id="chirperFormContainer">
-        <form action="" method="POST" class="regularForm">
-            {% csrf_token %}
-            {{ form.chirp|safe }}
-            <input class="inline-block rounded-full border-2 border-primary 
-            px-6 pt-2 pb-[6px] text-xs font-medium uppercase leading-normal 
-            text-primary transition duration-150 ease-in-out mb-1
-            hover:border-primary-600"
-            id="chirperButton" type="submit" value="Chirp" name="listBtn">
-        </form>
-    </section>
+    <main id="mainContainer">
+    {% if user.is_authenticated %}
+        <section id="chirperFormContainer">
+            <form action="" method="POST" class="regularForm">
+                {% csrf_token %}
+                {{ form.chirp|safe }}
+                <input class="inline-block rounded-full border-2 border-primary 
+                px-6 pt-2 pb-[6px] text-xs font-medium uppercase leading-normal 
+                text-primary transition duration-150 ease-in-out mb-1
+                hover:border-primary-600"
+                id="chirperButton" type="submit" value="Chirp" name="listBtn">
+            </form>
+        </section>
+    {% endif %}
+        <section id="readChirpsContainer">
+            {% for chirp in chirps reversed %}
+                <div class="bg-gray-100 m-2 border px-5 py-2">
+                    <p class="font-medium py-1">{{ chirp.user }}</p>
+                    <li class="list-none text-base mb-2">{{ chirp.chirp }}</li>
+                    <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}<span style="float: right">{{ chirp.likes }} likes</span></p>
+                </div>
+            {% endfor %}
+        </section>
+    </main>
 {% endblock %}

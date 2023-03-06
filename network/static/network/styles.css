@@ -7,10 +7,16 @@ html {
     border-bottom: 2px solid rgba(128, 128, 128, 0.4);
 }
 
+#mainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 #chirperFormContainer {
     display: flex;
     justify-content: center;
-    width: 100%;
 }
 
 #chirperButton {
@@ -21,6 +27,6 @@ html {
     background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
-/* #chirperForm {
-    max-width: 200rem;
-} */
+#readChirpsContainer {
+    min-width: 32rem;
+}

@@ -25,15 +25,20 @@ class PostForm(ModelForm):
 
 def index(request):
     form = PostForm(request.POST)
+    chirps = Post.objects.all()
     if request.method == "POST":
-        if form.is_valid():
-            chirp = request.POST['chirp']
-            f = Post(user=request.user, chirp=chirp, likes=0, date=datetime.now().strftime("%Y-%m-%d"))
-            f.save()
-        return HttpResponseRedirect(reverse("index"))
+        if request.user.is_authenticated:
+            if form.is_valid():
+                chirp = request.POST['chirp']
+                f = Post(user=request.user, chirp=chirp, likes=0, date=datetime.now().strftime("%Y-%m-%d"), time=datetime.now().strftime("%H:%M"))
+                f.save()
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "network/login.html")
     else:
         return render(request, "network/index.html", {
-            "form": PostForm()
+            "form": PostForm(),
+            "chirps": chirps
         })
 
 
