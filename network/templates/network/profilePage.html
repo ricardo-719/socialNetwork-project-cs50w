@@ -8,8 +8,37 @@
             <div id="profileInfo">
                 <p><b>{{ data.user }}</b></p>
                 <p><i>{{ data.introduction }}</i></p>
+                <div id="followProfile">
+                    <span><b>{{ data.numFollower }} Followers</b></span>&nbsp;|&nbsp;<span><b>{{ data.numFollowing }} Following</b></span>
+                </div>
+            </div>
+            {% if user.is_authenticated %}
+            <div id="followButton">
+                <form action="{% url 'follow' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" id="profileUsername" name="profileUsername" value="{{ data.user }}">
+                    <input type="submit" id="addFollower" value="Follow" 
+                    class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight 
+                    uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg 
+                    focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">   
+                    {% for account in followData %}
+                        {% if account.followed == data.username and account.follower == currentUser %}
+                            <input type="submit" value="Unfollow" 
+                            class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full 
+                            shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 
+                            active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out">
+                            <style>
+                                #addFollower {
+                                    display: none;
+                                }
+                            </style>
+                        {% endif %}
+                    {% endfor %}
+                </form>
+            {% endif %}
             </div>
         </section>
+        <hr>
         <section class="readChirpsContainer">
             {% for chirp in chirps reversed %}
                 <div class="bg-gray-100 m-2 border px-5 py-2">

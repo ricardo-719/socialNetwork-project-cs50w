@@ -13,7 +13,6 @@ class PostForm(ModelForm):
     class Meta:
         model = Post
         fields = ['chirp']
-        """ exclude = ['user', 'likes', 'date'] """
         widgets = {'chirp': Textarea(attrs={
             'class': "form-control px-2 py-1.5 text-gray-700 rounded transition ease-in-out m-1",
             'id': "chirperForm",
@@ -22,6 +21,7 @@ class PostForm(ModelForm):
             'autocomplete': "off",
             'placeholder': 'What\'s Happening?', 
             })}
+
 
 def index(request):
     form = PostForm(request.POST)
@@ -100,14 +100,57 @@ def register(request):
 
 
 def profile_view(request, name):
+
+    # Access Profile and Post data for rendering
     userProfile = Profile.objects.filter(username=name)
     userProfileId = 0
     for data in userProfile:
         userProfileId = data.id
     chirps = Post.objects.filter(user=userProfileId)
+
+    # Access Follow data for sorting
+    currentUser = str(request.user)
+    followData = Follows.objects.all()
+
+    # If profile exist, render
     if userProfile:
         return render(request, "network/profilePage.html", {
             "profile": userProfile,
-            "chirps": chirps        
+            "chirps": chirps,
+            "followData": followData,
+            "currentUser": currentUser
             })
+    return render(request, "network/login.html")
+
+
+def handleFollow(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+
+            # Variables for updating both classes (Profile & Follows)
+            followedUser = request.POST["profileUsername"]
+            followedUserDb = Profile.objects.get(username=followedUser)
+            followingUser = request.user
+            followingUserDb = Profile.objects.get(username=followingUser)
+
+            # Toggle Follow or Unfollow accordingly
+            if Follows.objects.filter(follower=followingUser) and Follows.objects.filter(followed=followedUser):
+                unfollowQuery = Follows.objects.get(follower=followingUser, followed=followedUser)
+                unfollowQuery.delete()
+                # Update number of Followers/Following
+                followedUserDb.numFollower -= 1
+                followingUserDb.numFollowing -= 1
+                followedUserDb.save()
+                followingUserDb.save()
+                return HttpResponseRedirect(followedUser)
+            else:
+                f = Follows(followed=followedUser, follower=followingUser)
+                f.save()
+                # Update number of Followers/Following
+                followedUserDb.numFollower += 1
+                followingUserDb.numFollowing += 1
+                followedUserDb.save()
+                followingUserDb.save()
+                return HttpResponseRedirect(followedUser)
+            
     return render(request, "network/login.html")

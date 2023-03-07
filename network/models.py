@@ -8,7 +8,7 @@ class User(AbstractUser):
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     chirp = models.CharField(max_length=280)
-    likes = models.IntegerField()
+    likes = models.IntegerField(default=0)
     date = models.DateField()
     time = models.TimeField()
 
@@ -17,6 +17,8 @@ class Profile(models.Model):
     username=models.CharField(max_length=80)
     profilePic=models.CharField(max_length=250, null=True, blank=True, default="https://th.bing.com/th/id/OIP.ybB2a0HimX1I-ybBY4pOPwHaHa?pid=ImgDet&rs=1")
     introduction=models.CharField(max_length=400, default="")
+    numFollower=models.IntegerField(default=0)
+    numFollowing=models.IntegerField(default=0)
 
     def __str__(self):
         return self.username
