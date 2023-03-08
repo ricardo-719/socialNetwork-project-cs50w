@@ -12,7 +12,7 @@
                     <span><b>{{ data.numFollower }} Followers</b></span>&nbsp;|&nbsp;<span><b>{{ data.numFollowing }} Following</b></span>
                 </div>
             </div>
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and data.username != currentUser %}
             <div id="followButton">
                 <form action="{% url 'follow' %}" method="POST">
                     {% csrf_token %}
@@ -35,8 +35,8 @@
                         {% endif %}
                     {% endfor %}
                 </form>
-            {% endif %}
             </div>
+            {% endif %}
         </section>
         <hr>
         <section class="readChirpsContainer">

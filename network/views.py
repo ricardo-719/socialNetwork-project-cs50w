@@ -42,7 +42,31 @@ def index(request):
             "chirps": chirps,
             "profile": profile
         })
+    
 
+def following_view(request):
+    form = PostForm(request.POST)
+    currentUser = str(request.user)
+    followingAccounts = Follows.objects.filter(follower=currentUser)
+    chirps = Post.objects.all()
+    profile = Profile.objects.all()
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            if form.is_valid():
+                chirp = request.POST['chirp']
+                f = Post(user=request.user, chirp=chirp, likes=0, date=datetime.now().strftime("%Y-%m-%d"), time=datetime.now().strftime("%H:%M"))
+                f.save()
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "network/login.html")
+    else:
+        return render(request, "network/following.html", {
+            "form": PostForm(),
+            "chirps": chirps,
+            "profile": profile,
+            "followingAccounts": followingAccounts
+        })
+    
 
 def login_view(request):
     if request.method == "POST":
