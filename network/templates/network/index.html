@@ -25,7 +25,7 @@
                 </p></a> 
                 {% with strUser=chirp.user|stringformat:'s' %}
                     {% if currentUser == strUser %}
-                <span style="float: right;"><i class="fa-solid fa-pen-to-square"></i></span>
+                <span style="float: right;"><a href="#"><i class="fa-solid fa-pen-to-square"></i></a></span>
                     {% endif %}
                 {% endwith %}
                 <li class="list-none text-base mb-2">{{ chirp.chirp }}</li>

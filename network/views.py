@@ -198,3 +198,11 @@ def handleFollow(request):
                 return HttpResponseRedirect(followedUser)
             
     return render(request, "network/login.html")
+
+
+def edit(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            return render(request, "network/login.html")
+    
+    return render(request, "network/login.html")
