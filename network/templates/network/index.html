@@ -20,9 +20,14 @@
                 {% for data in profile %}
                     {% if data.user == chirp.user %}
             <div class="bg-gray-100 m-2 border px-5 py-2">
-                <a href="{{ chirp.user }}" class="hover:no-underline"><p class="font-medium py-1">
+                <a href="{{ chirp.user }}" class="hover:no-underline"><p style="display:inline-block" class="font-medium py-1">
                     <img class="chirpProfilePicture" src="{{ data.profilePic }}" alt="Profile picture"> &nbsp; {{ chirp.user }}
-                </p></a>
+                </p></a> 
+                {% with strUser=chirp.user|stringformat:'s' %}
+                    {% if currentUser == strUser %}
+                <span style="float: right;"><i class="fa-solid fa-pen-to-square"></i></span>
+                    {% endif %}
+                {% endwith %}
                 <li class="list-none text-base mb-2">{{ chirp.chirp }}</li>
                 <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}<span style="float: right">{{ chirp.likes }} likes</span></p>
             </div>

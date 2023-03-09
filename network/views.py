@@ -26,6 +26,7 @@ class PostForm(ModelForm):
 
 def index(request):
     form = PostForm(request.POST)
+    currentUser = str(request.user)
     chirps = Post.objects.all().order_by("-id")
     # Apply Paginator
     paginator = Paginator(chirps, 10)
@@ -45,6 +46,7 @@ def index(request):
         return render(request, "network/index.html", {
             "form": PostForm(),
             "profile": profile,
+            "currentUser": currentUser,
             "pageObj": pageObj
         })
     
