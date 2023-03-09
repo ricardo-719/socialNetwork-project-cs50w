@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.forms import ModelForm, Textarea
 from datetime import datetime
+from django.core.paginator import Paginator
 
 from .models import User, Post, Profile, Follows
 
@@ -25,7 +26,11 @@ class PostForm(ModelForm):
 
 def index(request):
     form = PostForm(request.POST)
-    chirps = Post.objects.all()
+    chirps = Post.objects.all().order_by("-id")
+    # Apply Paginator
+    paginator = Paginator(chirps, 10)
+    pageNumber = request.GET.get('page')
+    pageObj = paginator.get_page(pageNumber)
     profile = Profile.objects.all()
     if request.method == "POST":
         if request.user.is_authenticated:
@@ -39,8 +44,8 @@ def index(request):
     else:
         return render(request, "network/index.html", {
             "form": PostForm(),
-            "chirps": chirps,
-            "profile": profile
+            "profile": profile,
+            "pageObj": pageObj
         })
     
 
@@ -48,7 +53,20 @@ def following_view(request):
     form = PostForm(request.POST)
     currentUser = str(request.user)
     followingAccounts = Follows.objects.filter(follower=currentUser)
-    chirps = Post.objects.all()
+    chirps = Post.objects.all().order_by("-id")
+    # Apply filtering of posts for Following accounts
+    dispFollowing = {}
+    count = 0
+    for chirp in chirps:
+        for account in followingAccounts:
+            strChirpUser = str(chirp.user)
+            if strChirpUser == account.followed:
+                dispFollowing[count] = chirp
+                count += 1
+    #Apply Paginator
+    paginator = Paginator(list(dispFollowing.values()), 10)
+    pageNumber = request.GET.get('page')
+    pageObj = paginator.get_page(pageNumber)
     profile = Profile.objects.all()
     if request.method == "POST":
         if request.user.is_authenticated:
@@ -60,11 +78,11 @@ def following_view(request):
         else:
             return render(request, "network/login.html")
     else:
-        return render(request, "network/following.html", {
+        return render(request, "network/index.html", {
             "form": PostForm(),
-            "chirps": chirps,
             "profile": profile,
-            "followingAccounts": followingAccounts
+            "followingAccounts": followingAccounts,
+            "pageObj": pageObj
         })
     
 
