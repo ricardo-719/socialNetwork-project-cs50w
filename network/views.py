@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.forms import ModelForm, Textarea
 from datetime import datetime
 from django.core.paginator import Paginator
+from django.http import JsonResponse
+import json
 
 from .models import User, Post, Profile, Follows
 
@@ -201,8 +203,16 @@ def handleFollow(request):
 
 
 def edit(request):
-    if request.method == "POST":
-        if request.user.is_authenticated:
-            return render(request, "network/login.html")
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
     
-    return render(request, "network/login.html")
+    # Get Edit content and chirp id
+    data = json.loads(request.body)
+    chirpId = data.get("chirpId", "")
+    content = data.get("content", "")
+
+    chirpInstance = Post.objects.get(id=chirpId)
+    chirpInstance.chirp = content
+    chirpInstance.save()
+
+    return JsonResponse({"message": "Chirp successfully updated."}, status=201)

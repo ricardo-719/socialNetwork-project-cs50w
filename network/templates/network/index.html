@@ -31,14 +31,15 @@
                 <li class="list-none text-base mb-2">{{ chirp.chirp }}</li>
                 <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}<span style="float: right">{{ chirp.likes }} likes</span></p>
             </div>
-            <div class="bg-gray-100 m-2 border px-5 py-2 bttn{{chirp.id}}" style="display: none;">
+            <div id="texta{{chirp.id}}" class="bg-gray-100 m-2 border px-5 py-2 bttn{{chirp.id}}" style="display: none;">
                 <a href="{{ chirp.user }}" class="hover:no-underline"><p class="font-medium py-1">
                     <img class="chirpProfilePicture" src="{{ data.profilePic }}" alt="Profile picture"> &nbsp; {{ chirp.user }} 
                 </p></a>
-                <form action="">
-                    <textarea name="edit{{ chirp.id }}" id="edit{{ chirp.id }}" class="bttn{{chirp.id}}" rows="2">{{ chirp.chirp }}</textarea>
+                <form class="editForm">
+                    <textarea name="edit{{ chirp.id }}" id="{{ chirp.id }}" rows="2" >{{ chirp.chirp }}</textarea>
                     <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}<span style="float: right">{{ chirp.likes }} likes</span></p>
-                    <input style="border: 1px solid black;" type="submit" value="Save changes">
+                    <input class= "rounded-full border-2 border-primary px-6 pt-1 pb-[5px] text-xs font-medium uppercase leading-normal 
+                    text-primary mb-1" type="submit" value="Save changes" name="editBtn" >
                 </form>
             </div>
                     {% endif %}
