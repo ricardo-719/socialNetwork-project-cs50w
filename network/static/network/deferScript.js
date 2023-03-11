@@ -65,3 +65,33 @@ const handleFormSubmit = async (event) => {
 // Event listener for form submission
 const editForm = document.querySelectorAll('.editForm');
 editForm.forEach((form) => form.addEventListener("submit", handleFormSubmit));
+
+// Event handler for likes
+const handleLike = async (event) => {
+
+    const chirpId = event.currentTarget.id.replace(/^like/, "").replace(/^editLike/, "")
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+    // Post using fetch
+    try {
+        const response = await fetch('/like', {
+            method: 'POST',
+            body: JSON.stringify({
+                chirpId: chirpId }),
+            credentials: 'same-origin',
+            headers: {
+                "X-CSRFToken": csrfToken
+            }
+        });
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);
+    } catch(error) {
+        console.log(error);
+    }
+
+    // Instantly update liked/disliked count
+}
+
+// Event listener for like clicks
+const likeBttns = document.querySelectorAll('.likeBttn');
+likeBttns.forEach((like) => like.addEventListener("click", handleLike))

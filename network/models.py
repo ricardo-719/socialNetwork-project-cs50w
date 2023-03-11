@@ -8,7 +8,7 @@ class User(AbstractUser):
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     chirp = models.CharField(max_length=280)
-    likes = models.IntegerField(default=0)
+    numLikes = models.IntegerField(default=0)
     date = models.DateField()
     time = models.TimeField()
 
@@ -26,3 +26,13 @@ class Profile(models.Model):
 class Follows(models.Model):
     follower=models.CharField(max_length=80)
     followed=models.CharField(max_length=80)
+
+class Likes(models.Model):
+    chirpId=models.ForeignKey(Post, on_delete=models.CASCADE)
+    userId=models.IntegerField()
+
+    class Meta:
+        unique_together = ('chirpId', 'userId',)
+
+    def __str__(self):
+        return f"{self.userId} likes {self.chirpId}"

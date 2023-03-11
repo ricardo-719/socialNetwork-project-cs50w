@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 import json
 
-from .models import User, Post, Profile, Follows
+from .models import User, Post, Profile, Follows, Likes
 
 
 class PostForm(ModelForm):
@@ -39,7 +39,7 @@ def index(request):
         if request.user.is_authenticated:
             if form.is_valid():
                 chirp = request.POST['chirp']
-                f = Post(user=request.user, chirp=chirp, likes=0, date=datetime.now().strftime("%Y-%m-%d"), time=datetime.now().strftime("%H:%M"))
+                f = Post(user=request.user, chirp=chirp, numLikes=0, date=datetime.now().strftime("%Y-%m-%d"), time=datetime.now().strftime("%H:%M"))
                 f.save()
             return HttpResponseRedirect(reverse("index"))
         else:
@@ -76,7 +76,7 @@ def following_view(request):
         if request.user.is_authenticated:
             if form.is_valid():
                 chirp = request.POST['chirp']
-                f = Post(user=request.user, chirp=chirp, likes=0, date=datetime.now().strftime("%Y-%m-%d"), time=datetime.now().strftime("%H:%M"))
+                f = Post(user=request.user, chirp=chirp, numLikes=0, date=datetime.now().strftime("%Y-%m-%d"), time=datetime.now().strftime("%H:%M"))
                 f.save()
             return HttpResponseRedirect(reverse("index"))
         else:
@@ -212,7 +212,64 @@ def edit(request):
     content = data.get("content", "")
 
     chirpInstance = Post.objects.get(id=chirpId)
-    chirpInstance.chirp = content
-    chirpInstance.save()
+    currentUser = request.user
 
+    # Confirm user is owner of chirp(post) & add to db
+    if (chirpInstance.user == currentUser):
+        chirpInstance.chirp = content
+        chirpInstance.save()
+    else:
+        return JsonResponse({"error": "Unauthorized access attempt!"}, status=400)
+    
     return JsonResponse({"message": "Chirp successfully updated."}, status=201)
+
+def handleLike(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+
+    if request.user.is_authenticated:
+
+        # Get data
+        data = json.loads(request.body)
+        chirpId = data.get("chirpId", "")
+
+        # Variables for updating both classes (Post & Likes)
+        chirpInstance = Post.objects.get(id=chirpId)
+        currentUser = str(request.user)
+        likingUser = User.objects.get(username=currentUser)
+        likeStatus = Likes.objects.filter(userId=likingUser.id, chirpId=Post.objects.get(id=chirpId))
+        print(likingUser.id)
+        print(chirpInstance.id)
+        print(likeStatus)
+            
+        if likeStatus:
+            # Remove like
+            likeStatus.delete()
+        else:
+            # Add like
+            f = Likes(userId=likingUser.id, chirpId=Post.objects.get(id=chirpId))
+            f.save()
+
+        return JsonResponse({"message": "Chirp successfully updated."}, status=201)
+
+        """ # Toggle Follow or Unfollow accordingly
+        if Follows.objects.filter(follower=followingUser) and Follows.objects.filter(followed=followedUser):
+            unfollowQuery = Follows.objects.get(follower=followingUser, followed=followedUser)
+            unfollowQuery.delete()
+            # Update number of Followers/Following
+            followedUserDb.numFollower -= 1
+            followingUserDb.numFollowing -= 1
+            followedUserDb.save()
+            followingUserDb.save()
+            return HttpResponseRedirect(followedUser)
+        else:
+            f = Follows(followed=followedUser, follower=followingUser)
+            f.save()
+            # Update number of Followers/Following
+            followedUserDb.numFollower += 1
+            followingUserDb.numFollowing += 1
+            followedUserDb.save()
+            followingUserDb.save()
+            return HttpResponseRedirect(followedUser) """
+    else:
+        return JsonResponse({"error": "Unauthorized access attempt!"}, status=400)
