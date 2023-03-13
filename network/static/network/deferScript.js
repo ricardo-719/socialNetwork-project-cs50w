@@ -66,6 +66,25 @@ const handleFormSubmit = async (event) => {
 const editForm = document.querySelectorAll('.editForm');
 editForm.forEach((form) => form.addEventListener("submit", handleFormSubmit));
 
+// Instantly update number of likes & icons on user's DOM
+const updateDom = (data, id) => {
+
+    let counterLikes = document.querySelectorAll(`.count${id}`)
+    const likeIconOne = document.getElementById(`like${id}`)
+    const likeIconTwo = document.getElementById(`editLike${id}`)
+    
+    counterLikes.forEach((countLike) => {
+        if (countLike.innerHTML > data) {
+            likeIconOne.className = "fa-regular fa-heart likeBttn"
+            likeIconTwo.className = "fa-regular fa-heart likeBttn"
+        } else {
+            likeIconOne.className = "fa-solid fa-heart likeBttn"
+            likeIconTwo.className = "fa-solid fa-heart likeBttn"
+        }
+        countLike.innerHTML = `${data}`
+    })
+}
+
 // Event handler for likes
 const handleLike = async (event) => {
 
@@ -84,12 +103,12 @@ const handleLike = async (event) => {
             }
         });
         const jsonResponse = await response.json();
-        console.log(jsonResponse);
+        console.log(jsonResponse)
+        // Call function to instanly update user's DOM
+        updateDom(jsonResponse, chirpId);
     } catch(error) {
         console.log(error);
     }
-
-    // Instantly update liked/disliked count
 }
 
 // Event listener for like clicks

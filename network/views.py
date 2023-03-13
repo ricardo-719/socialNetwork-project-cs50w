@@ -241,16 +241,23 @@ def handleLike(request):
         print(likingUser.id)
         print(chirpInstance.id)
         print(likeStatus)
-            
+
+        # Toggle like/dislike accordingly            
         if likeStatus:
             # Remove like
             likeStatus.delete()
+            chirpInstance.numLikes -= 1
+            chirpInstance.save()
         else:
             # Add like
             f = Likes(userId=likingUser.id, chirpId=Post.objects.get(id=chirpId))
             f.save()
+            chirpInstance.numLikes += 1
+            chirpInstance.save()
 
-        return JsonResponse({"message": "Chirp successfully updated."}, status=201)
+        return JsonResponse(chirpInstance.numLikes, safe=False)
+    
+        """  return JsonResponse({"message": "Chirp successfully updated."}, status=201) """
 
         """ # Toggle Follow or Unfollow accordingly
         if Follows.objects.filter(follower=followingUser) and Follows.objects.filter(followed=followedUser):

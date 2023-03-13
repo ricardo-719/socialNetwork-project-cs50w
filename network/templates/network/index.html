@@ -31,7 +31,7 @@
                 <li class="list-none text-base mb-2">{{ chirp.chirp }}</li>
                 <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}
                     <span style="float: right">
-                        <i id="like{{ chirp.id }}" class="fa-regular fa-heart likeBttn"></i> &nbsp; {{ chirp.numLikes }} likes
+                        <i id="like{{ chirp.id }}" class="fa-regular fa-heart likeBttn"></i> &nbsp; <span class="count{{chirp.id}}">{{ chirp.numLikes }}</span> likes
                     </span>
                 </p>
             </div>
@@ -43,7 +43,7 @@
                     <textarea name="edit{{ chirp.id }}" id="{{ chirp.id }}" rows="2" >{{ chirp.chirp }}</textarea>
                     <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}
                         <span style="float: right">
-                            <i id="editLike{{ chirp.id }}" class="fa-regular fa-heart likeBttn"></i> &nbsp; {{ chirp.numLikes }} likes
+                            <i id="editLike{{ chirp.id }}" class="fa-regular fa-heart likeBttn"></i> &nbsp; <span class="count{{chirp.id}}">{{ chirp.numLikes }}</span> likes
                         </span>
                     </p>
                     <input class= "rounded-full border-2 border-primary px-6 pt-1 pb-[5px] text-xs font-medium uppercase leading-normal 
