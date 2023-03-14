@@ -31,7 +31,8 @@
                 <li class="list-none text-base mb-2">{{ chirp.chirp }}</li>
                 <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}
                     <span style="float: right">
-                        <i id="like{{ chirp.id }}" class="fa-regular fa-heart likeBttn"></i> &nbsp; <span class="count{{chirp.id}}">{{ chirp.numLikes }}</span> likes
+                        <i id="like{{ chirp.id }}" class="fa-regular fa-heart likeBttn"></i>
+                        &nbsp; <span class="count{{chirp.id}}">{{ chirp.numLikes }}</span> likes
                     </span>
                 </p>
             </div>
@@ -43,7 +44,16 @@
                     <textarea name="edit{{ chirp.id }}" id="{{ chirp.id }}" rows="2" >{{ chirp.chirp }}</textarea>
                     <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}
                         <span style="float: right">
-                            <i id="editLike{{ chirp.id }}" class="fa-regular fa-heart likeBttn"></i> &nbsp; <span class="count{{chirp.id}}">{{ chirp.numLikes }}</span> likes
+                            <i id="editLike{{ chirp.id }}" class="fa-regular fa-heart likeBttn"></i>
+                            &nbsp; <span class="count{{chirp.id}}">{{ chirp.numLikes }}</span> likes
+                            {% for like in likes %}
+                                {% if like.userId == currentUserId and chirp == like.chirpId %}
+                                <script>
+                                    document.getElementById(`like{{ chirp.id }}`).className = "fa-solid fa-heart likeBttn" 
+                                    document.getElementById(`editLike{{ chirp.id }}`).className = "fa-solid fa-heart likeBttn"
+                                </script>
+                                {% endif %}
+                            {% endfor %}
                         </span>
                     </p>
                     <input class= "rounded-full border-2 border-primary px-6 pt-1 pb-[5px] text-xs font-medium uppercase leading-normal 

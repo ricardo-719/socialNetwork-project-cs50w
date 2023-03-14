@@ -35,6 +35,14 @@ def index(request):
     pageNumber = request.GET.get('page')
     pageObj = paginator.get_page(pageNumber)
     profile = Profile.objects.all()
+    likes = Likes.objects.all()
+    # Get user id to verify chirps status (liked / not liked)
+    if request.user.is_authenticated:
+        bufferId = User.objects.filter(username=currentUser)
+        for user in bufferId:
+            currentUserId = user.id
+    else:
+        currentUserId = 'none'
     if request.method == "POST":
         if request.user.is_authenticated:
             if form.is_valid():
@@ -49,6 +57,8 @@ def index(request):
             "form": PostForm(),
             "profile": profile,
             "currentUser": currentUser,
+            "currentUserId": currentUserId,
+            "likes": likes,
             "pageObj": pageObj
         })
     
