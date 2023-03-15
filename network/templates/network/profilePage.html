@@ -6,8 +6,8 @@
         {% for data in profile %}
             <img id="profilePicture" src="{{ data.profilePic }}" alt="Profile picture">
             <div id="profileInfo">
-                <p><b>{{ data.user }}</b></p>
-                <p><i>{{ data.introduction }}</i></p>
+                <p class="pb-2"><b>{{ data.user }}</b></p>
+                <p class="pb-5"><i>{{ data.introduction }}</i></p>
                 <div id="followProfile">
                     <span><b>{{ data.numFollower }} Followers</b></span>&nbsp;|&nbsp;<span><b>{{ data.numFollowing }} Following</b></span>
                 </div>
@@ -36,6 +36,10 @@
                     {% endfor %}
                 </form>
             </div>
+            {% elif user.is_authenticated and data.username == currentUser %}
+            <div id="editProfileButton">
+                <i id="profileIcon" class="fa-solid fa-user-pen"></i>
+            </div>
             {% endif %}
         </section>
         <hr>
@@ -44,7 +48,7 @@
                 <div class="bg-gray-100 m-2 border px-5 py-2">
                     <p class="font-medium py-1"><img class="chirpProfilePicture" src="{{ data.profilePic }}" alt="Profile picture"> &nbsp; {{ chirp.user }}</p>
                     <li class="list-none text-base mb-2">{{ chirp.chirp }}</li>
-                    <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}<span style="float: right">{{ chirp.likes }} likes</span></p>
+                    <p class="text-gray-600 text-xs py-2">{{ chirp.date }} | {{ chirp.time }}<span style="float: right">{{ chirp.numLikes }} likes</span></p>
                 </div>
             {% endfor %}
         {% endfor %}

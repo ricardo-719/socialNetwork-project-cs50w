@@ -36,6 +36,7 @@ def index(request):
     pageObj = paginator.get_page(pageNumber)
     profile = Profile.objects.all()
     likes = Likes.objects.all()
+    
     # Get user id to verify chirps status (liked / not liked)
     if request.user.is_authenticated:
         bufferId = User.objects.filter(username=currentUser)
@@ -248,9 +249,6 @@ def handleLike(request):
         currentUser = str(request.user)
         likingUser = User.objects.get(username=currentUser)
         likeStatus = Likes.objects.filter(userId=likingUser.id, chirpId=Post.objects.get(id=chirpId))
-        print(likingUser.id)
-        print(chirpInstance.id)
-        print(likeStatus)
 
         # Toggle like/dislike accordingly            
         if likeStatus:
@@ -266,27 +264,5 @@ def handleLike(request):
             chirpInstance.save()
 
         return JsonResponse(chirpInstance.numLikes, safe=False)
-    
-        """  return JsonResponse({"message": "Chirp successfully updated."}, status=201) """
-
-        """ # Toggle Follow or Unfollow accordingly
-        if Follows.objects.filter(follower=followingUser) and Follows.objects.filter(followed=followedUser):
-            unfollowQuery = Follows.objects.get(follower=followingUser, followed=followedUser)
-            unfollowQuery.delete()
-            # Update number of Followers/Following
-            followedUserDb.numFollower -= 1
-            followingUserDb.numFollowing -= 1
-            followedUserDb.save()
-            followingUserDb.save()
-            return HttpResponseRedirect(followedUser)
-        else:
-            f = Follows(followed=followedUser, follower=followingUser)
-            f.save()
-            # Update number of Followers/Following
-            followedUserDb.numFollower += 1
-            followingUserDb.numFollowing += 1
-            followedUserDb.save()
-            followingUserDb.save()
-            return HttpResponseRedirect(followedUser) """
     else:
         return JsonResponse({"error": "Unauthorized access attempt!"}, status=400)

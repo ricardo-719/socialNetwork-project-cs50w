@@ -19,7 +19,7 @@
             {% for chirp in pageObj %}
                 {% for data in profile %}
                     {% if data.user == chirp.user %}
-            <div class="bg-gray-100 m-2 border px-5 py-2">
+            <div class="bg-gray-100 m-2 border rounded-2xl px-5 py-2">
                 <a href="{{ chirp.user }}" class="hover:no-underline"><p style="display:inline-block" class="font-medium py-1">
                     <img class="chirpProfilePicture" src="{{ data.profilePic }}" alt="Profile picture"> &nbsp; {{ chirp.user }}
                 </p></a> 

@@ -2,6 +2,49 @@ html {
     font-size: 16px;
 }
 
+body {
+    background-color: #d4f4fc;
+}
+
+#logoImg {
+    max-width: 18rem;
+    margin-left: 8%;
+}
+
+#mainNavigationLinksContainer {
+    margin-left: 3%;
+}
+
+.aNav {
+    position: relative;
+    text-decoration: none;
+    color:inherit;
+    transition: 0.3s;
+}
+  
+.aNav:hover {
+    opacity: 0.7;
+}
+  
+.aNav:active {
+    opacity: 0.3;
+}
+  
+.aNav:after {
+    position: absolute;
+    content: "";
+    background-color: rgba(245, 91, 91, 0.473);
+    height: 0.2rem;
+    width: 0;
+    left:0;
+    bottom: -0.1rem;
+    transition: 0.4s;
+}
+  
+.aNav:hover:after {
+    width: 100%;
+}
+
 .regularForm {
     width: fit-content;
     border-bottom: 2px solid rgba(128, 128, 128, 0.4);
@@ -28,7 +71,7 @@ html {
 }
 
 .readChirpsContainer {
-    min-width: 32rem;
+    max-width: 32rem;
 }
 
 #profileMainContainer {
@@ -54,9 +97,37 @@ html {
     display: inline-block;
     border-radius: 50%;
     max-width: 2.2rem;
+    height: auto;
+    object-fit: cover;
+    overflow: hidden;
 }
 
 #profileInfo {
     font-size: 1.2rem;
     margin-top: 5%;
+    margin-left: 6%;
+}
+
+#followButton {
+    margin-top: 5%;
+    margin-left: 1rem;
+}
+
+#followProfile {
+    width: 14.5rem;
+}
+
+#editProfileButton {
+    margin-top: 5%;
+    cursor: pointer;
+}
+
+#profileIcon {
+    font-size: 1.5rem;
+}
+
+.logInAndOut {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
