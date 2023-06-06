@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+PORT = int(os.environ.get("PORT", 8080))
 
 # Application definition
 
