@@ -21,10 +21,10 @@
                     <li class="nav-item">
                         <a class="nav-link text-xl" href="{{ user.username }}"><strong>{{ user.username }}</strong></a>
                     </li>
+                    <li class="nav-item aNav">
+                        <a class="nav-link text-xl" href="{% url 'index' %}">All Posts</a>
+                    </li>
                 {% endif %}
-                <li class="nav-item aNav">
-                  <a class="nav-link text-xl" href="{% url 'index' %}">All Posts</a>
-                </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link text-xl aNav" href="{% url 'following' %}">Following</a>

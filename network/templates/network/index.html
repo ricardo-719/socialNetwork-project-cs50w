@@ -8,14 +8,14 @@
                 {% csrf_token %}
                 {{ form.chirp|safe }}
                 <input class="inline-block rounded-full border-2 border-primary 
-                px-6 pt-2 pb-[6px] text-xs font-medium uppercase leading-normal 
+                px-6 pt-2 pb-[8px] mt-2 mb-2 text-xs font-medium uppercase leading-normal 
                 text-primary transition duration-150 ease-in-out mb-1
                 hover:border-primary-600"
                 id="chirperButton" type="submit" value="Chirp" name="listBtn">
             </form>
         </section>
-    {% endif %}
-        <section class="readChirpsContainer">
+        <br>
+        <section class="readChirpsContainer md:w-[32rem]">
             {% for chirp in pageObj %}
                 {% for data in profile %}
                     {% if data.user == chirp.user %}
@@ -25,7 +25,7 @@
                 </p></a> 
                 {% with strUser=chirp.user|stringformat:'s' %}
                     {% if currentUser == strUser %}
-                <span id="bttn{{chirp.id}}" class="editButton" style="float: right;"><i class="fa-solid fa-pen-to-square"></i></span>
+                <span id="bttn{{chirp.id}}" class="editButton" style="float: right;"><i class="fa-solid fa-pen-to-square cursor-pointer"></i></span>
                     {% endif %}
                 {% endwith %}
                 <li class="list-none text-base mb-2">{{ chirp.chirp }}</li>
@@ -64,6 +64,7 @@
                 {% endfor %}
             {% endfor %}
         </section>
+        <br>
         <div>
             <span class="step-links pagination">
                 {% if pageObj.has_previous %}
@@ -86,4 +87,32 @@
             </span>
         </div>
     </main>
+    {% else %}
+    <section class="relative w-full mt-20 overflow-hidden rounded-lg md:bg-cover bg-fill bg-no-repeat p-12 text-center"
+    style="background-image: url('https://images.pexels.com/photos/4006534/pexels-photo-4006534.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); height: 520px; background-position-y: -8rem">
+        <div
+        class="absolute bottom-0 left-0 right-0 top-0 w-full max-h-full overflow-hidden bg-fixed"
+        style="background-color: rgba(0, 0, 0, 0.6)">
+            <div class="flex h-full items-center justify-center">
+                <div class="text-white">
+                <h2 class="mb-4 text-4xl font-semibold">THE MELODY OF SOCIAL CONNECTIONS</h2>
+                <h4 class="mb-6 text-xl font-semibold">Share Your Story, One Line at a Time</h4>
+                <a href="{% url 'login' %}">
+                    <button
+                    type="button"
+                    class="rounded border-2 border-neutral-50 px-7 pb-[8px] pt-[10px] text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 
+                    ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 
+                    focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+                    data-te-ripple-init
+                    data-te-ripple-color="light">
+                        Try Chirper
+                    </button>
+                </a>
+                
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    
 {% endblock %}
